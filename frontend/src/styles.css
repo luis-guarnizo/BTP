@@ -1,0 +1,295 @@
+:root {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light;
+  --primary: #f2c200;
+  --primary-dark: #cba100;
+  --ink: #111111;
+  --ok: #16a34a;
+  --warning: #dc2626;
+  --bg: #faf9f5;
+  --border: #e3e1d8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: #1f2937;
+}
+
+h1 {
+  font-size: 1.6rem;
+  margin-bottom: 0.25rem;
+}
+
+h2 {
+  font-size: 1.1rem;
+  margin-top: 2rem;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin-top: 0;
+}
+
+.hint {
+  color: #9ca3af;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ---- Check-in (mobile-first) ---- */
+.checkin-page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+  min-height: 100vh;
+}
+
+.center-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.stack-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.stack-form label,
+.grid-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+input,
+select {
+  padding: 0.7rem 0.8rem;
+  border-radius: 0.6rem;
+  border: 1px solid var(--border);
+  font-size: 1rem;
+}
+
+.btn {
+  border: none;
+  border-radius: 0.7rem;
+  padding: 0.75rem 1.1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--ink);
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+.btn-big {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.05rem;
+}
+
+.btn-link {
+  background: none;
+  color: var(--ink);
+  text-decoration: underline;
+  margin-top: 1.5rem;
+}
+
+.btn-class {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  background: white;
+  border: 2px solid var(--border);
+  margin-bottom: 0.6rem;
+  text-align: left;
+}
+
+.btn-class:hover {
+  border-color: var(--primary);
+}
+
+.class-list {
+  margin-top: 0.75rem;
+}
+
+.class-name {
+  font-weight: 700;
+}
+
+.class-time {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.card {
+  border-radius: 0.8rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  border: 1px solid var(--border);
+  background: white;
+}
+
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.2rem 0;
+}
+
+.card-ok {
+  border-color: var(--ok);
+  background: #f0fdf4;
+}
+
+.card-warning {
+  border-color: var(--warning);
+  background: #fef2f2;
+}
+
+.error-text {
+  color: var(--warning);
+  font-weight: 600;
+}
+
+.success-text {
+  color: var(--ok);
+  font-weight: 600;
+}
+
+/* ---- Dashboard ---- */
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  background: var(--ink);
+  color: white;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  border-right: 3px solid var(--primary);
+}
+
+.sidebar h2 {
+  font-size: 1.1rem;
+  margin-top: 0;
+  color: var(--primary);
+}
+
+.sidebar-user {
+  color: #d4d4d4;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.nav-link {
+  display: block;
+  padding: 0.6rem 0.7rem;
+  border-radius: 0.5rem;
+  color: #e5e7eb;
+  text-decoration: none;
+  margin-bottom: 0.3rem;
+}
+
+.nav-link.active,
+.nav-link:hover {
+  background: var(--primary);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 2rem 2.5rem;
+  max-width: 1000px;
+}
+
+.grid-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  background: white;
+  padding: 1.25rem;
+  border-radius: 0.8rem;
+  border: 1px solid var(--border);
+  align-items: end;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: white;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+.muted {
+  color: #9ca3af;
+  font-size: 0.8rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.stat-box {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.stat-box strong {
+  font-size: 1.4rem;
+}
+
+.stat-ok strong {
+  color: var(--ok);
+}
+
+.stat-warning strong {
+  color: var(--warning);
+}
+
+.qr-preview {
+  background: white;
+  display: inline-block;
+  padding: 1.5rem;
+  border-radius: 0.8rem;
+  border: 1px solid var(--border);
+  margin: 1rem 0;
+}
