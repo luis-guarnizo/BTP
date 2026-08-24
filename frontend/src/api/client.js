@@ -1,13 +1,17 @@
 const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
 
-function getCookie(name) {
-  const match = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
-  return match ? decodeURIComponent(match[1]) : null;
-}
+// El frontend (Vercel) y el backend (Render) son dominios distintos, así
+// que `document.cookie` no puede leer la cookie `csrftoken` que pone el
+// backend (las cookies de otro dominio no son legibles por JS aunque el
+// navegador sí las reenvíe). Por eso guardamos el token del body de la
+// respuesta en vez de leerlo de la cookie.
+let csrfToken = null;
 
-async function ensureCsrfCookie() {
-  if (!getCookie("csrftoken")) {
-    await fetch(`${API_BASE}/accounts/csrf/`, { credentials: "include" });
+async function ensureCsrfToken() {
+  if (!csrfToken) {
+    const response = await fetch(`${API_BASE}/accounts/csrf/`, { credentials: "include" });
+    const data = await response.json();
+    csrfToken = data.csrfToken;
   }
 }
 
@@ -15,8 +19,8 @@ async function request(path, { method = "GET", body } = {}) {
   const headers = { "Content-Type": "application/json" };
 
   if (method !== "GET" && method !== "HEAD") {
-    await ensureCsrfCookie();
-    headers["X-CSRFToken"] = getCookie("csrftoken");
+    await ensureCsrfToken();
+    headers["X-CSRFToken"] = csrfToken;
   }
 
   const response = await fetch(`${API_BASE}${path}`, {
