@@ -2,9 +2,11 @@ from django.core.management.base import BaseCommand
 
 from apps.accounts.models import Student
 
-# Listado "Línea 3 Amateur" digitalizado desde registro en papel.
+# Listados de alumnos digitalizados desde registros en papel.
 # (first_name, last_name, phone)
-STUDENTS = [
+
+# "Línea 3 Amateur", "Línea 2 Semiprofesional", "Línea 1 Profesional".
+LINEAS_STUDENTS = [
     ("Laura Sofía", "", "3150400409"),
     ("Dominik", "Ordóñez", "3005913049"),
     ("María", "Parra", "3188332268"),
@@ -61,10 +63,33 @@ STUDENTS = [
     ("Gabriela", "Rodríguez", "3165049012"),
 ]
 
+# "Iniciación Nivel 1" y "Nivel 2 Intermedio", agregado 2026-09-09.
+# Oliver y Diana no traían apellido en la libreta; se guarda "Pendiente"
+# como apellido temporal a pedido directo.
+SOCIAL_STUDENTS = [
+    ("Yerlin Viviana", "Losso", "3178037096"),
+    ("Jhonier", "Solarte", "3161589340"),
+    ("Juliana", "Dristizobol", "3102840236"),
+    ("Eduar", "Llantén", "3235991296"),
+    ("Tania", "Torrico", "3106560172"),
+    ("Andrés", "Cañón", "3216775261"),
+    ("Kevin", "Quiroz", "3165551614"),
+    ("Sergio", "Camayo", "3226167226"),
+    ("Daniel", "Suárez", "3128656975"),
+    ("Lorena", "Erazo", "3122361839"),
+    ("Samuel", "Solarte", "3024413331"),
+    ("Paula", "Solarte", "3113960374"),
+    ("Laura Viviana", "Ramírez", "3226657697"),
+    ("Oliver", "Pendiente", "3146487641"),
+    ("Diana", "Pendiente", "3148297908"),
+    ("Víctor", "Cañón", "3235091859"),
+    ("Julián", "Murcia", "3017900352"),
+]
+
 
 class Command(BaseCommand):
     """Importa los listados de alumnos digitalizados desde registros en
-    papel ('Línea 3 Amateur', 'Línea 2 Semiprofesional'). Idempotente por
+    papel (varias líneas artísticas y niveles de social). Idempotente por
     teléfono: si ya existe un alumno con ese número, se omite sin pisar
     datos existentes.
 
@@ -81,21 +106,27 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         created = 0
         skipped = 0
-        for first_name, last_name, phone in STUDENTS:
-            if Student.objects.filter(phone=phone).exists():
-                self.stdout.write(f"Ya existe, se omite: {first_name} {last_name} ({phone})")
-                skipped += 1
-                continue
-            student = Student(
-                first_name=first_name,
-                last_name=last_name,
-                phone=phone,
-                category=Student.CATEGORY_LINEAS,
-            )
-            student.set_pin(phone[-4:])
-            student.save()
-            created += 1
-            self.stdout.write(f"Creado: {first_name} {last_name} ({phone})")
+
+        batches = [
+            (LINEAS_STUDENTS, Student.CATEGORY_LINEAS),
+            (SOCIAL_STUDENTS, Student.CATEGORY_SOCIAL),
+        ]
+        for students, category in batches:
+            for first_name, last_name, phone in students:
+                if Student.objects.filter(phone=phone).exists():
+                    self.stdout.write(f"Ya existe, se omite: {first_name} {last_name} ({phone})")
+                    skipped += 1
+                    continue
+                student = Student(
+                    first_name=first_name,
+                    last_name=last_name,
+                    phone=phone,
+                    category=category,
+                )
+                student.set_pin(phone[-4:])
+                student.save()
+                created += 1
+                self.stdout.write(f"Creado: {first_name} {last_name} ({phone})")
 
         self.stdout.write(
             self.style.SUCCESS(f"Listo: {created} alumnos creados, {skipped} ya existían.")
