@@ -18,22 +18,39 @@ STUDENTS = [
     ("Luis Ángel", "Cotaño", "3174863638"),
     ("Natalia", "Garcés", "3197038780"),
     ("María Alejandra", "Cortés", "3176695091"),
+    # Listado "Línea 2 Semiprofesional" digitalizado desde registro en
+    # papel, agregado el 2026-09-09. Valentina Paredes ya estaba en la
+    # lista de arriba (mismo teléfono) y Emily Mosquera no tenía número,
+    # así que no se incluyen aquí.
+    ("Luis Gonzalo", "Guarnizo", "3185970857"),
+    ("Melanie", "Cardona", "3107007082"),
+    ("Alejandra", "Garcés", "3244549178"),
+    ("Isabella", "Muñoz", "3115640007"),
+    ("Mariana", "López", "3163321565"),
+    ("Giovanny", "Cotaño", "3156281342"),
+    ("Katherine", "Muñoz", "3158009573"),
+    ("Sorya", "", "3243551046"),
+    ("Luisa", "Arias", "3216642395"),
+    ("Juan David", "Quintero G.", "3177814774"),
+    ("Carolina", "Camayo", "3022905374"),
 ]
 
 
 class Command(BaseCommand):
-    """Importa el listado inicial de alumnos de 'Línea 3 Amateur' (registro
-    en papel, digitalizado el 2026-09-09). Idempotente por teléfono: si ya
-    existe un alumno con ese número, se omite sin pisar datos existentes.
+    """Importa los listados de alumnos digitalizados desde registros en
+    papel ('Línea 3 Amateur', 'Línea 2 Semiprofesional'). Idempotente por
+    teléfono: si ya existe un alumno con ese número, se omite sin pisar
+    datos existentes.
 
     PIN inicial = últimos 4 dígitos del teléfono; el alumno lo puede
     cambiar después desde el check-in.
 
-    Pensado para correr una sola vez desde el Build Command de Render
-    (plan free no tiene shell) y luego quitarlo del Build Command.
+    Pensado para correr desde el Build Command de Render (plan free no
+    tiene shell) cada vez que se digitaliza una lista nueva; es seguro
+    dejarlo en el Build Command de forma permanente.
     """
 
-    help = "Importa el listado inicial de alumnos de Línea 3 Amateur."
+    help = "Importa los listados de alumnos digitalizados desde papel."
 
     def handle(self, *args, **options):
         created = 0
