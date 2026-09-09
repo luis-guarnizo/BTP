@@ -33,6 +33,32 @@ STUDENTS = [
     ("Luisa", "Arias", "3216642395"),
     ("Juan David", "Quintero G.", "3177814774"),
     ("Carolina", "Camayo", "3022905374"),
+    # Listado "Línea 1 Profesional" digitalizado desde registro en papel,
+    # agregado el 2026-09-09. Luis Miguel Espinosa no tenía número, así
+    # que no se incluye aquí. Gabriela Rodríguez no venía en esta lista,
+    # se agregó a mano por pedido directo.
+    ("Juan José", "Rivas", "3122458012"),
+    ("Alejandro", "López", "3171665459"),
+    ("Kevin", "Tapasco", "3112225923"),
+    ("Sebastián", "Martínez", "3025695934"),
+    ("Stefanía", "Madrigal", "3234967897"),
+    ("Angie", "Aldana", "3106775069"),
+    ("Flora", "Rivera", "3023782368"),
+    ("Gabriela", "Toro", "3176757302"),
+    ("Stiven", "Ojeda", "3007709683"),
+    ("Geraldine", "Londoño", "3105353050"),
+    ("Saray", "Vargas", "3226538415"),
+    ("Nicole", "Grajales", "3233273396"),
+    ("Álvaro", "Tovar", "3185694620"),
+    ("Bianca", "Torres", "3164996628"),
+    ("Camilo", "Hernández", "3186142315"),
+    ("Valentina", "Perea", "3058023920"),
+    ("Juliana", "Quintero", "3182691328"),
+    ("Mayra Alejandra", "Hoyos", "3012719292"),
+    ("Sara", "Perdomo", "3163210629"),
+    ("Antony", "Jordán", "3005863363"),
+    ("Jacobo", "Lenis", "3135681370"),
+    ("Gabriela", "Rodríguez", "3165049012"),
 ]
 
 
