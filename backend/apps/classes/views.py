@@ -21,11 +21,16 @@ class TodayClassesView(generics.ListAPIView):
 
 
 class ClassOfferingListCreateView(generics.ListCreateAPIView):
-    """Administración del horario semanal (dueño/recepción)."""
+    """Administración del horario semanal (dueño/recepción).
+
+    Sin paginación: el frontend consume este listado completo (tabla de
+    horario) sin manejar páginas.
+    """
 
     queryset = ClassOffering.objects.all()
     serializer_class = ClassOfferingSerializer
     permission_classes = [IsReceptionistOrAdmin]
+    pagination_class = None
 
 
 class ClassOfferingDetailView(generics.RetrieveUpdateDestroyAPIView):
