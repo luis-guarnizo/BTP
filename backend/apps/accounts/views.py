@@ -153,11 +153,19 @@ class CheckinMeView(APIView):
 
 
 class StudentListCreateView(generics.ListCreateAPIView):
-    """Recepción: registrar alumnos nuevos / listar alumnos."""
+    """Recepción: registrar alumnos nuevos / listar alumnos.
+
+    Sin paginación: el frontend usa este listado completo para el
+    selector de alumnos al vender un paquete y para la tabla de
+    "Alumnos", así que siempre debe traer todos, no solo la primera
+    página (con la paginación por defecto de 25, los alumnos importados
+    después del #25 no aparecían en esas pantallas).
+    """
 
     queryset = Student.objects.all().order_by("-created_at")
     permission_classes = [IsReceptionistOrAdmin]
     filterset_fields = ["category", "is_active"]
+    pagination_class = None
 
     def get_serializer_class(self):
         if self.request.method == "POST":
