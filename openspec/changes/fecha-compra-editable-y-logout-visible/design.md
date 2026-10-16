@@ -37,7 +37,7 @@
 
 6. **Frontend de edición.** En la tabla "Últimos paquetes" cada fila tiene un botón "Editar fecha" que cambia la celda de compra por un `<input type="date">` con Guardar/Cancelar. Al guardar hace `api.patch(`/packages/${id}/`, { purchase_date })`, muestra el mensaje de éxito/error existente y recarga el listado. *Alternativa:* un modal; se descarta por ser más código sin necesidad.
 
-7. **Logout visible.** `DashboardLayout.jsx` agrega una barra superior (`.topbar`) dentro de `.dashboard-content`, con el usuario y un botón "Cerrar sesión" con estilo de botón (no enlace). El botón del final del sidebar se quita para no duplicar. Se añade una regla `@media (max-width: 768px)` para que `.dashboard` pase a columna y el sidebar no empuje la barra fuera de la pantalla.
+7. **Logout visible.** `DashboardLayout.jsx` agrega una barra superior (`.topbar`) dentro de `.dashboard-content`, con el usuario y un botón "Cerrar sesión" con estilo de botón (no enlace). El botón del final del sidebar se quita. En pantallas angostas (`@media (max-width: 768px)`) el menú pasa arriba, la barra superior se oculta y en su lugar se muestra un botón compacto a la derecha del título del menú, con el usuario debajo del título, para no ocupar una fila propia.
 
 ## Risks / Trade-offs
 

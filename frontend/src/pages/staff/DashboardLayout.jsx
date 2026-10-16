@@ -22,7 +22,16 @@ export default function DashboardLayout() {
   return (
     <div className="dashboard">
       <aside className="sidebar">
-        <h2>Bachatea Team Project</h2>
+        <div className="sidebar-header">
+          <div>
+            <h2>Bachatea Team Project</h2>
+            <span className="sidebar-user">{staff?.username}</span>
+          </div>
+          {/* En celular el botón vive aquí, compacto, en vez de la barra superior. */}
+          <button className="btn btn-logout-compact" onClick={handleLogout}>
+            Cerrar sesión
+          </button>
+        </div>
         <nav>
           {links.map((link) => (
             <NavLink
