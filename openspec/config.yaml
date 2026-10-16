@@ -1,0 +1,40 @@
+schema: spec-driven
+
+context: |
+  Language: es
+  All artifacts must be written in es.
+  Keep OpenSpec structural headings and SHALL/MUST keywords in English.
+
+  Proyecto: BTP (Bachatea Team Project), sistema de una academia de baile.
+  - Backend: Django + Django REST Framework (backend/apps: accounts, packages,
+    attendance, classes, notifications, reports). Desplegado en Render, BD
+    Postgres en Neon.
+  - Frontend: React + Vite (frontend/src), desplegado en Vercel. Panel de
+    recepción en /recepcion/* (staff con sesión de Django) y check-in de
+    alumnos en / (teléfono + PIN).
+  - Usuarios: dueño/admin y recepcionista (grupo "Recepcionista"); alumnos
+    no son usuarios de Django.
+  - Paquetes: categoría Social (por créditos) y Líneas (mensualidad
+    ilimitada). La interfaz y los mensajes están en español.
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always state what is out of scope
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
+
+# Per-operation guidance (optional)
+# Add advisory guidance for how apply and archive work should be conducted.
+# This is separate from artifact rules above.
+# Example:
+#   operations:
+#     apply:
+#       guidance:
+#         - Keep test summaries concise
+#     archive:
+#       guidance:
+#         - Summarize the archive outcome before finishing

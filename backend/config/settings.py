@@ -163,4 +163,6 @@ DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "no-reply@escueladebaile.co
 
 # Business rules
 SOCIAL_PACKAGE_VALIDITY_DAYS = int(os.getenv("SOCIAL_PACKAGE_VALIDITY_DAYS", 30))
+# Las mensualidades de Líneas vencen este día del mes siguiente a la compra.
+LINEAS_EXPIRY_DAY = int(os.getenv("LINEAS_EXPIRY_DAY", 5))
 LOW_CREDIT_ALERT_THRESHOLD = int(os.getenv("LOW_CREDIT_ALERT_THRESHOLD", 1))

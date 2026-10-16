@@ -46,3 +46,15 @@ class PackageCreateSerializer(serializers.ModelSerializer):
         if request and request.user and request.user.is_authenticated:
             validated_data["sold_by"] = request.user
         return super().create(validated_data)
+
+
+class PackagePurchaseDateSerializer(serializers.ModelSerializer):
+    """Recepción: corregir la fecha de compra de un paquete ya vendido
+    (p. ej. se olvidó registrarlo el día del pago). Es lo único editable;
+    el vencimiento se recalcula en Package.save()."""
+
+    purchase_date = serializers.DateField(required=True)
+
+    class Meta:
+        model = Package
+        fields = ["purchase_date"]

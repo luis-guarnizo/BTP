@@ -1,4 +1,3 @@
-import calendar
 from datetime import timedelta
 
 from django.conf import settings
@@ -18,7 +17,7 @@ class PackageType(models.Model):
       - 6 clases  $120.000
       - 8 clases  $200.000
 
-    Líneas (mensualidad ilimitada, vence fin de mes calendario):
+    Líneas (mensualidad ilimitada, vence el día 5 del mes siguiente):
       - Kids        $120.000
       - Amateur     $120.000
       - Semipro     $110.000
@@ -77,19 +76,41 @@ class Package(models.Model):
     def __str__(self):
         return f"{self.student} - {self.package_type} ({self.purchase_date})"
 
+    @classmethod
+    def from_db(cls, db, field_names, values):
+        instance = super().from_db(db, field_names, values)
+        # Recordamos la fecha de compra cargada para saber en save() si
+        # cambió (p. ej. recepción o el admin la corrigieron) y hay que
+        # recalcular el vencimiento.
+        instance._loaded_purchase_date = instance.__dict__.get("purchase_date")
+        return instance
+
     def save(self, *args, **kwargs):
         is_new = self._state.adding
-        if is_new:
+        purchase_date_changed = (
+            not is_new
+            and self.purchase_date != getattr(self, "_loaded_purchase_date", self.purchase_date)
+        )
+        if is_new or purchase_date_changed:
             self.expires_at = self._compute_expiry()
-            if not self.package_type.is_unlimited and self.credits_remaining is None:
-                self.credits_remaining = self.package_type.credit_count
+            update_fields = kwargs.get("update_fields")
+            if update_fields is not None and "purchase_date" in update_fields:
+                kwargs["update_fields"] = {*update_fields, "expires_at"}
+        if is_new and not self.package_type.is_unlimited and self.credits_remaining is None:
+            self.credits_remaining = self.package_type.credit_count
         super().save(*args, **kwargs)
+        self._loaded_purchase_date = self.purchase_date
 
     def _compute_expiry(self):
         if self.package_type.category == Student.CATEGORY_LINEAS:
-            # Vence fin de mes calendario, sin importar el día de pago.
-            last_day = calendar.monthrange(self.purchase_date.year, self.purchase_date.month)[1]
-            return self.purchase_date.replace(day=last_day)
+            # Vence el día LINEAS_EXPIRY_DAY del mes siguiente a la compra,
+            # sin importar el día de pago (todos comparten el mismo ciclo).
+            year, month = self.purchase_date.year, self.purchase_date.month + 1
+            if month > 12:
+                year, month = year + 1, 1
+            return self.purchase_date.replace(
+                year=year, month=month, day=settings.LINEAS_EXPIRY_DAY
+            )
         # Social: 1 mes después del pago; si no usa las clases, las pierde.
         return self.purchase_date + timedelta(days=settings.SOCIAL_PACKAGE_VALIDITY_DAYS)
 
