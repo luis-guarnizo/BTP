@@ -99,6 +99,17 @@ select {
   background: var(--primary-dark);
 }
 
+.btn-small {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.85rem;
+  background: #f3f4f6;
+  color: var(--ink);
+}
+
+.btn-small.btn-primary {
+  background: var(--primary);
+}
+
 .btn-big {
   width: 100%;
   padding: 1rem;
@@ -197,12 +208,6 @@ select {
   color: var(--primary);
 }
 
-.sidebar-user {
-  color: #d4d4d4;
-  font-size: 0.85rem;
-  margin-bottom: 1.5rem;
-}
-
 .nav-link {
   display: block;
   padding: 0.6rem 0.7rem;
@@ -223,6 +228,74 @@ select {
   flex: 1;
   padding: 2rem 2.5rem;
   max-width: 1000px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.topbar-user {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.btn-logout {
+  background: var(--ink);
+  color: white;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.9rem;
+}
+
+.btn-logout:hover {
+  background: #374151;
+}
+
+.row-actions {
+  white-space: nowrap;
+}
+
+.row-actions .btn + .btn {
+  margin-left: 0.4rem;
+}
+
+.table input[type="date"] {
+  padding: 0.35rem 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* En pantallas angostas el menú pasa arriba y el contenido debajo, para
+   que la barra con "Cerrar sesión" no quede fuera de la pantalla. */
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 3px solid var(--primary);
+    padding: 1rem;
+  }
+
+  .sidebar nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .nav-link {
+    margin-bottom: 0;
+  }
+
+  .dashboard-content {
+    padding: 1rem;
+    max-width: 100%;
+    overflow-x: auto;
+  }
 }
 
 .grid-form {

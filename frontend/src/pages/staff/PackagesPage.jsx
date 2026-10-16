@@ -1,13 +1,25 @@
 import { useEffect, useState } from "react";
 import { api } from "../../api/client";
 
+// Fecha local de hoy en formato YYYY-MM-DD (el que usa <input type="date">).
+const today = () => new Date().toLocaleDateString("en-CA");
+
+const emptyForm = () => ({
+  student: "",
+  package_type: "",
+  payment_method: "efectivo",
+  purchase_date: today(),
+});
+
 export default function PackagesPage() {
   const [students, setStudents] = useState([]);
   const [packageTypes, setPackageTypes] = useState([]);
   const [packages, setPackages] = useState([]);
-  const [form, setForm] = useState({ student: "", package_type: "", payment_method: "efectivo" });
+  const [form, setForm] = useState(emptyForm);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  // Paquete cuya fecha de compra se está corrigiendo en la tabla.
+  const [editing, setEditing] = useState(null);
 
   const load = () => {
     api.get("/accounts/students/").then((data) => setStudents(data.results ?? data));
@@ -24,10 +36,27 @@ export default function PackagesPage() {
     try {
       await api.post("/packages/", form);
       setSuccess("Paquete/mensualidad registrado.");
-      setForm({ student: "", package_type: "", payment_method: "efectivo" });
+      setForm(emptyForm());
       load();
     } catch (err) {
       setError(err.message);
+    }
+  };
+
+  const handleSaveDate = async () => {
+    setError("");
+    setSuccess("");
+    try {
+      const updated = await api.patch(`/packages/${editing.id}/`, {
+        purchase_date: editing.purchase_date,
+      });
+      setSuccess(
+        `Fecha de compra actualizada para ${updated.student}: ahora vence el ${updated.expires_at}.`
+      );
+      setEditing(null);
+      load();
+    } catch (err) {
+      setError(err.data?.purchase_date?.[0] || err.message);
     }
   };
 
@@ -76,6 +105,15 @@ export default function PackagesPage() {
             <option value="transferencia">Transferencia</option>
           </select>
         </label>
+        <label>
+          Fecha de compra
+          <input
+            type="date"
+            required
+            value={form.purchase_date}
+            onChange={(e) => setForm({ ...form, purchase_date: e.target.value })}
+          />
+        </label>
         <button type="submit" className="btn btn-primary">
           Registrar pago
         </button>
@@ -93,19 +131,57 @@ export default function PackagesPage() {
             <th>Vence</th>
             <th>Créditos</th>
             <th>Estado</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          {packages.map((p) => (
-            <tr key={p.id}>
-              <td>{p.student}</td>
-              <td>{p.package_type_name}</td>
-              <td>{p.purchase_date}</td>
-              <td>{p.expires_at}</td>
-              <td>{p.credits_remaining ?? "Ilimitado"}</td>
-              <td>{p.status}</td>
-            </tr>
-          ))}
+          {packages.map((p) => {
+            const isEditing = editing?.id === p.id;
+            return (
+              <tr key={p.id}>
+                <td>{p.student}</td>
+                <td>{p.package_type_name}</td>
+                <td>
+                  {isEditing ? (
+                    <input
+                      type="date"
+                      required
+                      value={editing.purchase_date}
+                      onChange={(e) => setEditing({ ...editing, purchase_date: e.target.value })}
+                    />
+                  ) : (
+                    p.purchase_date
+                  )}
+                </td>
+                <td>{p.expires_at}</td>
+                <td>{p.credits_remaining ?? "Ilimitado"}</td>
+                <td>{p.status}</td>
+                <td className="row-actions">
+                  {isEditing ? (
+                    <>
+                      <button
+                        className="btn btn-small btn-primary"
+                        onClick={handleSaveDate}
+                        disabled={!editing.purchase_date}
+                      >
+                        Guardar
+                      </button>
+                      <button className="btn btn-small" onClick={() => setEditing(null)}>
+                        Cancelar
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      className="btn btn-small"
+                      onClick={() => setEditing({ id: p.id, purchase_date: p.purchase_date })}
+                    >
+                      Editar fecha
+                    </button>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

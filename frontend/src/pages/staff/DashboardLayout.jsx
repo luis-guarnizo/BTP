@@ -23,7 +23,6 @@ export default function DashboardLayout() {
     <div className="dashboard">
       <aside className="sidebar">
         <h2>Bachatea Team Project</h2>
-        <p className="sidebar-user">{staff?.username}</p>
         <nav>
           {links.map((link) => (
             <NavLink
@@ -35,11 +34,14 @@ export default function DashboardLayout() {
             </NavLink>
           ))}
         </nav>
-        <button className="btn btn-link" onClick={handleLogout}>
-          Cerrar sesión
-        </button>
       </aside>
       <main className="dashboard-content">
+        <header className="topbar">
+          <span className="topbar-user">{staff?.username}</span>
+          <button className="btn btn-logout" onClick={handleLogout}>
+            Cerrar sesión
+          </button>
+        </header>
         <Outlet />
       </main>
     </div>

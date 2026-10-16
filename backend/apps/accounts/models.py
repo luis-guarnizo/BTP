@@ -52,6 +52,6 @@ class Student(models.Model):
 
         return (
             Package.objects.filter(student=self)
-            .order_by("-purchase_date")
+            .order_by("-purchase_date", "-created_at")
             .first()
         )
