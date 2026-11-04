@@ -28,9 +28,11 @@
 
 4. **Errores en el frontend.** En `StudentsPage.jsx` una función `formatErrors(err)` convierte `err.data` (objeto campo → lista de mensajes) en texto legible usando etiquetas en español ("Teléfono: Ya existe…"); si no hay `data` por campo, usa `err.message`. Se usa tanto en registrar como en editar. *Alternativa:* cambiar `api/client.js` para todas las pantallas; se descarta para no tocar comportamiento de otras pantallas en este cambio.
 
-5. **Formulario de edición.** Botón "Editar" por fila. Al pulsarlo aparece, encima del listado, una tarjeta "Editar alumno" (reutiliza `.grid-form`) con los campos precargados y un campo "PIN nuevo (opcional)" vacío; botones Guardar y Cancelar. Se envía `PATCH` con todos los campos del formulario (y `pin` solo si tiene valor), se muestra el mensaje de éxito, se cierra y se recarga el listado. La página hace scroll a la tarjeta al abrirla, para que se vea en celular. *Alternativa:* edición en línea en la tabla; se descarta porque son 7 campos y en celular no cabe.
+5. **Formulario de edición.** Botón "Editar" por fila. Al pulsarlo aparece, encima del listado, una tarjeta "Editar alumno" (reutiliza `.grid-form`) con los campos precargados y un campo "PIN nuevo (opcional)" vacío; botones Guardar y Cancelar. Se envía `PATCH` con todos los campos del formulario (y `pin` solo si tiene valor), se muestra el mensaje de éxito, se cierra y se recarga el listado. La página se desplaza (solo en vertical) hasta la tarjeta al abrirla, para que se vea en celular. *Alternativa:* edición en línea en la tabla; se descarta porque son 7 campos y en celular no cabe.
 
-6. **Listado** agrega la columna "Cédula" y una columna de acciones con el botón "Editar".
+6. **Listado** agrega la columna "Cédula" y, como primera columna, el botón "Editar", para que en celular se vea sin deslizar la tabla.
+
+7. **Desplazamiento horizontal solo en las tablas.** Las tablas de Alumnos y Paquetes van dentro de un contenedor `.table-wrap` con `overflow-x: auto`, y el contenido del panel deja de desplazarse completo hacia los lados en celular. Así, al deslizar la tabla, los formularios y la tarjeta de edición no se corren.
 
 ## Risks / Trade-offs
 
