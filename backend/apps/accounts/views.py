@@ -18,6 +18,7 @@ from apps.accounts.serializers import (
     StudentLoginSerializer,
     StudentPublicSerializer,
     StudentRegisterSerializer,
+    StudentStaffSerializer,
 )
 
 
@@ -170,10 +171,14 @@ class StudentListCreateView(generics.ListCreateAPIView):
     def get_serializer_class(self):
         if self.request.method == "POST":
             return StudentRegisterSerializer
-        return StudentPublicSerializer
+        return StudentStaffSerializer
 
 
 class StudentDetailView(generics.RetrieveUpdateAPIView):
+    """Recepción/administración: corregir datos de un alumno o
+    restablecer su PIN (solo PATCH)."""
+
     queryset = Student.objects.all()
     permission_classes = [IsReceptionistOrAdmin]
-    serializer_class = StudentPublicSerializer
+    serializer_class = StudentStaffSerializer
+    http_method_names = ["get", "patch", "options"]

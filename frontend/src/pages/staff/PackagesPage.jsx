@@ -122,68 +122,70 @@ export default function PackagesPage() {
       {success && <div className="success-text">{success}</div>}
 
       <h2>Últimos paquetes</h2>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Alumno</th>
-            <th>Plan</th>
-            <th>Compra</th>
-            <th>Vence</th>
-            <th>Créditos</th>
-            <th>Estado</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {packages.map((p) => {
-            const isEditing = editing?.id === p.id;
-            return (
-              <tr key={p.id}>
-                <td>{p.student}</td>
-                <td>{p.package_type_name}</td>
-                <td>
-                  {isEditing ? (
-                    <input
-                      type="date"
-                      required
-                      value={editing.purchase_date}
-                      onChange={(e) => setEditing({ ...editing, purchase_date: e.target.value })}
-                    />
-                  ) : (
-                    p.purchase_date
-                  )}
-                </td>
-                <td>{p.expires_at}</td>
-                <td>{p.credits_remaining ?? "Ilimitado"}</td>
-                <td>{p.status}</td>
-                <td className="row-actions">
-                  {isEditing ? (
-                    <>
+      <div className="table-wrap">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Alumno</th>
+              <th>Plan</th>
+              <th>Compra</th>
+              <th>Vence</th>
+              <th>Créditos</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {packages.map((p) => {
+              const isEditing = editing?.id === p.id;
+              return (
+                <tr key={p.id}>
+                  <td>{p.student}</td>
+                  <td>{p.package_type_name}</td>
+                  <td>
+                    {isEditing ? (
+                      <input
+                        type="date"
+                        required
+                        value={editing.purchase_date}
+                        onChange={(e) => setEditing({ ...editing, purchase_date: e.target.value })}
+                      />
+                    ) : (
+                      p.purchase_date
+                    )}
+                  </td>
+                  <td>{p.expires_at}</td>
+                  <td>{p.credits_remaining ?? "Ilimitado"}</td>
+                  <td>{p.status}</td>
+                  <td className="row-actions">
+                    {isEditing ? (
+                      <>
+                        <button
+                          className="btn btn-small btn-primary"
+                          onClick={handleSaveDate}
+                          disabled={!editing.purchase_date}
+                        >
+                          Guardar
+                        </button>
+                        <button className="btn btn-small" onClick={() => setEditing(null)}>
+                          Cancelar
+                        </button>
+                      </>
+                    ) : (
                       <button
-                        className="btn btn-small btn-primary"
-                        onClick={handleSaveDate}
-                        disabled={!editing.purchase_date}
+                        className="btn btn-small"
+                        onClick={() => setEditing({ id: p.id, purchase_date: p.purchase_date })}
                       >
-                        Guardar
+                        Editar fecha
                       </button>
-                      <button className="btn btn-small" onClick={() => setEditing(null)}>
-                        Cancelar
-                      </button>
-                    </>
-                  ) : (
-                    <button
-                      className="btn btn-small"
-                      onClick={() => setEditing({ id: p.id, purchase_date: p.purchase_date })}
-                    >
-                      Editar fecha
-                    </button>
-                  )}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

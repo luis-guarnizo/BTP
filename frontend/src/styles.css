@@ -278,6 +278,24 @@ select {
   border-radius: 0.5rem;
 }
 
+.edit-card {
+  margin-top: 1.5rem;
+}
+
+.edit-card h2 {
+  margin-top: 0;
+}
+
+.edit-card .grid-form {
+  border-color: var(--primary);
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 .row-actions {
   white-space: nowrap;
 }
@@ -340,7 +358,7 @@ select {
   .dashboard-content {
     padding: 1rem;
     max-width: 100%;
-    overflow-x: auto;
+    min-width: 0;
   }
 }
 
@@ -353,6 +371,12 @@ select {
   border-radius: 0.8rem;
   border: 1px solid var(--border);
   align-items: end;
+}
+
+/* La tabla se desplaza sola hacia los lados en pantallas angostas, sin
+   mover el resto de la página (formularios, tarjeta de edición). */
+.table-wrap {
+  overflow-x: auto;
 }
 
 .table {
